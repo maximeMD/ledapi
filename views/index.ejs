@@ -1,0 +1,144 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Ledapi</title>
+  </head>
+  <body>
+	<h1>Ledapi</h1>
+	
+
+	<input class="jscolor {onFineChange:'update(this)'}" value="ffcc00">
+	<br/>
+	<button type="button" id="redBtn" class="btn btn-danger">Red</button>
+	<button type="button" id="greenBtn" class="btn btn-success">Green</button>
+	<button type="button" id="blueBtn" class="btn btn-primary">Blue</button>
+	<br/>
+	<input type="range" min="0" max="1500" value="500" class="slider" id="timeInterval">
+	<br/>
+	<button type="button" id="randomBtn" class="btn btn-secondary">Random</button>
+	<button type="button" id="rgbBtn" class="btn btn-secondary">RGB</button>
+	<button type="button" id="rgbFadeBtn" class="btn btn-secondary">RGB Fade</button>
+	<button type="button" id="rgbStrictFadeBtn" class="btn btn-secondary">RGB Strict Fade</button>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="/lib/jscolor.js"></script>
+	</body>
+</html>
+
+<script>
+
+function update(picker) {
+    $.ajax({
+        type: "POST",
+        url: "/ledColor",
+        data: {
+            redValue: Math.round(picker.rgb[0]),
+            greenValue: Math.round(picker.rgb[1]),
+            blueValue: Math.round(picker.rgb[2])
+        }
+    });
+}
+
+var selectedMode = "random";
+
+$("#randomBtn").click(function(){
+	$.ajax({
+        type: "POST",
+        url: "/random",
+        data: {
+            timeInterval: $("#timeInterval").val()
+        }
+	});
+	selectedMode = "random";
+});
+$("#rgbBtn").click(function(){
+	$.ajax({
+        type: "POST",
+        url: "/rgb",
+        data: {
+            timeInterval: $("#timeInterval").val()
+        }
+	});
+	selectedMode = "rgb";
+});
+$("#rgbFadeBtn").click(function(){
+	$.ajax({
+        type: "POST",
+        url: "/rgbFade",
+        data: {
+            timeInterval: $("#timeInterval").val()
+        }
+	});
+	selectedMode = "rgbFade";
+});
+$("#rgbStrictFadeBtn").click(function(){
+	$.ajax({
+        type: "POST",
+        url: "/rgbStrictFade",
+        data: {
+            timeInterval: $("#timeInterval").val()
+        }
+	});
+	selectedMode = "rgbStrictFade";
+});
+
+
+$("#redBtn").click(function(){
+	$.ajax({
+        type: "POST",
+        url: "/ledColor",
+        data: {
+            redValue: 255,
+            greenValue: 0,
+            blueValue: 0
+        }
+    });
+});
+$("#greenBtn").click(function(){
+	$.ajax({
+        type: "POST",
+        url: "/ledColor",
+        data: {
+            redValue: 0,
+            greenValue: 255,
+            blueValue: 0
+        }
+    });
+});
+$("#blueBtn").click(function(){
+	$.ajax({
+        type: "POST",
+        url: "/ledColor",
+        data: {
+            redValue: 0,
+            greenValue: 0,
+            blueValue: 255
+        }
+    });
+});
+
+$('#timeInterval').on('input', function(){
+	$.ajax({
+		type: "POST",
+		url: "/" + selectedMode,
+		data: {
+			timeInterval: $(this).val()
+		}
+	});
+});
+
+</script>
