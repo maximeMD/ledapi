@@ -24,6 +24,9 @@ var ledColorRoutes = require("./routes/ledColorRoutes");
 ledColorRoutes(app);
 var clientRoutes = require("./routes/clientRoutes");
 clientRoutes(app);
+var soundRoutes = require("./routes/soundRoutes");
+soundRoutes(app);
+
 
 app.use(express.static(__dirname + '/public'));
 
