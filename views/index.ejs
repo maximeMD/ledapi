@@ -28,7 +28,9 @@
 	<button type="button" id="rgbBtn" class="btn btn-secondary">RGB</button>
 	<button type="button" id="rgbFadeBtn" class="btn btn-secondary">RGB Fade</button>
 	<button type="button" id="rgbStrictFadeBtn" class="btn btn-secondary">RGB Strict Fade</button>
-
+    <br/><br/>
+    <input type="text" id="speechVal" />
+    <button type="button" id="speechBtn" class="btn btn-secondary">Action</button>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -139,6 +141,16 @@ $('#timeInterval').on('input', function(){
 			timeInterval: $(this).val()
 		}
 	});
+});
+
+$('#speechBtn').click(function(){
+    $.ajax({
+        type : 'POST',
+        url: '/' + "speech",
+        data: {
+            sentence: $('#speechVal').val()
+        }
+    })
 });
 
 </script>
